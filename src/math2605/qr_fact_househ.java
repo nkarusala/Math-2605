@@ -57,7 +57,7 @@ public class qr_fact_househ {
     
    
     public RealMatrix getR () {
-     AbstractRealMatrix R = new Array2DRowRealMatrix();
+     RealMatrix R = new Array2DRowRealMatrix();
       for (int i = 0; i < col; i++) {
          for (int j = 0; j < col; j++) {
             if (i < j) {
@@ -74,7 +74,7 @@ public class qr_fact_househ {
     
     
     public RealMatrix getQ () {
-      AbstractRealMatrix Q = new Array2DRowRealMatrix();
+      RealMatrix Q = new Array2DRowRealMatrix();
       for (int k = col-1; k >= 0; k--) {
          for (int i = 0; i < row; i++) {
              qr.setEntry(i, k, 0);
