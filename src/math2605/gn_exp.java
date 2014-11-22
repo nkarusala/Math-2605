@@ -20,7 +20,7 @@ import org.apache.commons.math.linear.RealMatrix;
  *
  * @author nkaru_000
  */
-public class gn_qua {
+public class gn_exp {
 
     /**
      * @param args the command line arguments
@@ -71,7 +71,7 @@ public class gn_qua {
         int row = 0;
         for (String[] p : pairs) {
             double x = Double.parseDouble(p[0]);
-            double fx = a * Math.pow(x, 2) + b * x + c;
+            double fx = a * Math.pow(Math.E, b * x) + c;
             double y = Double.parseDouble(p[1]);
             double resid = y - fx;
             r.setEntry(row, 0, resid);
@@ -85,9 +85,9 @@ public class gn_qua {
             for (int j = 0; j < 3; j++) {
                 double entry = -1;
                 if (j == 0) {
-                    entry = -x * x;
+                    entry = -(Math.pow(Math.E, b * x));
                 } else if (j == 1) {
-                    entry = -x;
+                    entry = -a * x * Math.pow(Math.E, b * x);
                 }
                 J.setEntry(i, j, entry);    
             } 
