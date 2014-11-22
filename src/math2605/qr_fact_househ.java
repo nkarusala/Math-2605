@@ -55,32 +55,7 @@ public class qr_fact_househ {
         }
     }
     
-    
-    public int checkFull(){
-        int full = 0;
-        for(int i = 0; i < col;i++){
-            if(dig[i] == 0){
-                full = 1;
-            }
-        }
-        return full;
-    }
-    
-    
-    public RealMatrix getHouseHolder(){
-        AbstractRealMatrix H = new Array2DRowRealMatrix();
-        for (int i = 0; i < row; i++) {
-         for (int j = 0; j < col; j++) {
-            if (i >= j) {
-               H.setEntry(i, j, qr.getEntry(i, j));
-            } else {
-                H.setEntry(i, j, 0);
-            }
-         }
-      }
-      return H;
-    }
-    
+   
     public RealMatrix getR () {
      AbstractRealMatrix R = new Array2DRowRealMatrix();
       for (int i = 0; i < col; i++) {
