@@ -20,6 +20,7 @@ public class qr_fact_househ {
         private double[] dig;
 
     public qr_fact_househ(RealMatrix m){
+        qr = new Array2DRowRealMatrix(m.getRowDimension(), m.getColumnDimension());
         qr = m.copy();
         row = m.getRowDimension();
         col = m.getColumnDimension();
@@ -57,7 +58,7 @@ public class qr_fact_househ {
     
    
     public RealMatrix getR () {
-     RealMatrix R = new Array2DRowRealMatrix();
+     RealMatrix R = new Array2DRowRealMatrix(qr.getRowDimension(), qr.getRowDimension());
       for (int i = 0; i < col; i++) {
          for (int j = 0; j < col; j++) {
             if (i < j) {
@@ -74,7 +75,7 @@ public class qr_fact_househ {
     
     
     public RealMatrix getQ () {
-      RealMatrix Q = new Array2DRowRealMatrix();
+      RealMatrix Q = new Array2DRowRealMatrix(qr.getRowDimension(), qr.getRowDimension());
       for (int k = col-1; k >= 0; k--) {
          for (int i = 0; i < row; i++) {
              qr.setEntry(i, k, 0);
