@@ -9,7 +9,12 @@ package math2605;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import org.apache.commons.math.linear.AbstractRealMatrix;
+import org.apache.commons.math.linear.Array2DRowRealMatrix;
+import org.apache.commons.math.linear.RealMatrix;
 
 /**
  *
@@ -21,29 +26,72 @@ public class gn_qua {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        //get file name
         System.out.println("Please enter a file name:\n");
         Scanner scanner = new Scanner(System.in);
         String fileName = scanner.nextLine();
+        List<String []> pairs = new ArrayList<>();
+        //get coordinate pairs and add to arraylist
         try{
             BufferedReader br = new BufferedReader(new FileReader(fileName));
             String line;
             while ( (line = br.readLine()) != null) {
                 String[] pair = line.split(",");
+                pairs.add(pair);
             }
             br.close();
-        }catch(Exception e){} //or write your own exceptions
+        } catch (Exception e) {}
         
-       
         System.out.println("Please enter the value of a:\n");
-        int a = scanner.nextInt();
+        double a = scanner.nextInt();
         System.out.println("Please enter the value of b:\n");
-        int b = scanner.nextInt();
+        double b = scanner.nextInt();
         System.out.println("Please enter the value of c:\n");
-        int c = scanner.nextInt();
+        double c = scanner.nextInt();
+        //init B, vector with 3 coordinates
+        AbstractRealMatrix B = new Array2DRowRealMatrix(3, 1);
+        B.setEntry(0, 0, a);
+        B.setEntry(1, 0, b);
+        B.setEntry(2, 0, c);
         
         System.out.println("Please enter the number of iteration for the Gauss-newton:\n");
+        //init N, number of iterations
         int N = scanner.nextInt();
         
+        //init r, vector of residuals
+        AbstractRealMatrix r = new Array2DRowRealMatrix();
+        setR(pairs, a, b, c, r);
+        
+        //init J, Jacobian of r
+        AbstractRealMatrix J = new Array2DRowRealMatrix();
+        setJ(pairs, a, b, c, r, J);
+    }
+    
+    private static void setR(List<String []> pairs, double a, double b, double c, AbstractRealMatrix r) {
+        int row = 0;
+        for (String[] p : pairs) {
+            double x = Double.parseDouble(p[0]);
+            double fx = a*Math.pow(x, 2) + b*x + c;
+            double y = Double.parseDouble(p[1]);
+            double resid = y - fx;
+            r.setEntry(row, 0, resid);
+            row++;
+        }
+    }
+    
+    private static void setJ(List<String[]> pairs, double a, double b, double c, AbstractRealMatrix r, AbstractRealMatrix J) {
+        for (int i = 0; i < r.getRowDimension(); i++) {
+            double x = Double.parseDouble(pairs.get(i)[0]);
+            for (int j = 0; j < 3; j++) {
+                double entry = 0;
+                if (j == 0) {
+                    entry = -2*a*x;
+                } else if (j == 1) {
+                    entry = -b;
+                }
+                J.setEntry(i, j, entry);    
+            } 
+        }
     }
         
     
