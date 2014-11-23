@@ -123,8 +123,8 @@ public class gn_qua {
         System.out.println("qtranspose");
         System.out.println(qTranspose);
         RealMatrix R = m.getR();
-        MatrixMethods temp = new MatrixMethods();
-        RealMatrix rInverse = temp.inverseMatrix(R);
+        MatrixMethods temp = new MatrixMethods(R);
+        RealMatrix rInverse = temp.inverseMatrix();
         System.out.println("rInverse");
         System.out.println(rInverse);
         RealMatrix sub = rInverse.multiply(qTranspose).multiply(r);
