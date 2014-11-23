@@ -64,12 +64,6 @@ public class power_method {
 
         eVec.setColumnMatrix(0, uInit.getColumnMatrix(0));
         power_object retVal = new power_object(eVal, eVec, num);
-//        System.out.println("Eigenvalue:");
-//        System.out.println(eVal);
-//        System.out.println("Eigenvector:");
-//        System.out.println(eVec);
-//        System.out.println("Number of iterations performed:");
-//        System.out.println(num);
         return retVal;
     }
     
@@ -92,7 +86,6 @@ public class power_method {
             power_object largestVal = power_method(r, u, .00005, 100);
             power_object smallestVal = power_method(inverseR, u, .00005, 100);
             if (largestVal == null || smallestVal == null) {
-                //System.out.println("it's null");
                 continue;
             }
             trace = m.trace();
@@ -103,10 +96,10 @@ public class power_method {
             trace_dets.add(td);
         }
         JFreeChart chart = ChartFactory.createXYLineChart(
-                "Trace vs. Determinant",
+                "Trace vs. Determinant for Power Method",
                 "Determinant",
                 "Trace",
-                createDataSet(trace_dets),
+                createDataSetA(trace_dets),
                 PlotOrientation.VERTICAL,
                 true, true, false);
         ChartPanel chartPanel = new ChartPanel(chart);
@@ -130,9 +123,36 @@ public class power_method {
         ChartFrame frame = new ChartFrame("Power Method", chart);
         frame.pack();
         frame.setVisible(true);
+        
+        JFreeChart inverseChart = ChartFactory.createXYLineChart(
+                "Trace vs. Determinant for Inverse Power Method",
+                "Determinant",
+                "Trace",
+                createDataSetAInverse(trace_dets),
+                PlotOrientation.VERTICAL,
+                true, true, false);
+        ChartPanel inverseChartPanel = new ChartPanel(inverseChart);
+        inverseChartPanel.setPreferredSize( new java.awt.Dimension( 560 , 367 ) );
+        final XYPlot inversePlot = inverseChart.getXYPlot( );
+        XYLineAndShapeRenderer inverseRenderer = new XYLineAndShapeRenderer( );
+        inverseRenderer.setSeriesPaint( 0 , Color.RED );
+        inverseRenderer.setSeriesPaint( 1 , Color.BLUE );
+        inverseRenderer.setSeriesPaint( 2 , Color.GREEN );
+        inverseRenderer.setSeriesPaint( 3 , Color.BLACK );
+        inverseRenderer.setSeriesPaint( 4 , Color.YELLOW );
+        inverseRenderer.setSeriesPaint( 5 , Color.PINK );
+        inverseRenderer.setSeriesPaint( 6 , Color.ORANGE );
+        inverseRenderer.setSeriesPaint( 7 , Color.GRAY );
+        inverseRenderer.setSeriesPaint( 8 , Color.MAGENTA );
+        inverseRenderer.setSeriesPaint( 9 , Color.LIGHT_GRAY );
+        inverseRenderer.setSeriesPaint( 10 , Color.DARK_GRAY);
+        inversePlot.setRenderer(renderer); 
+        ChartFrame inverseFrame = new ChartFrame("Power Method", inverseChart);
+        inverseFrame.pack();
+        inverseFrame.setVisible(true);
     }
     
-    private static XYDataset createDataSet(List<trace_det> list) {
+    private static XYDataset createDataSetA(List<trace_det> list) {
         final XYSeries data1 = new XYSeries("1");
         final XYSeries data2 = new XYSeries("2");
         final XYSeries data3 = new XYSeries("3");
@@ -151,6 +171,69 @@ public class power_method {
             det = t.getDet();
             trace = t.getTrace();
             n = t.getIterA();
+            //System.out.println(n);
+            if (n >= 1 && n <= 10) {
+                //System.out.println("1-10");
+                data1.add(det, trace);
+            } else if (n >= 11 && n <= 20) {
+                //System.out.println("11-20");
+                data2.add(det, trace);
+            } else if (n >= 21 && n <= 30) {
+                //System.out.println("21-30");
+                data3.add(det, trace);
+            } else if (n >= 31 && n <= 40) {
+                //System.out.println("31-40");
+                data4.add(det, trace);
+            } else if (n >= 41 && n <= 50) {
+                //System.out.println("41-50");
+                data5.add(det, trace);
+            } else if (n >= 51 && n <= 60) {
+                //System.out.println("51-60");
+                data6.add(det, trace);
+            } else if (n >= 61 && n <= 70) {
+                //System.out.println("61-70");
+                data7.add(det, trace);
+            } else if (n >= 71 && n <= 80) {
+                data8.add(det, trace);
+            } else if (n >= 81 && n <= 90) {
+                data9.add(det, trace);
+            } else {
+                data10.add(det, trace);
+            }
+        }
+        final XYSeriesCollection dataset = new XYSeriesCollection( );
+        dataset.addSeries(data1);
+        dataset.addSeries(data2);
+        dataset.addSeries(data3);
+        dataset.addSeries(data4);
+        dataset.addSeries(data5);
+        dataset.addSeries(data6);
+        dataset.addSeries(data7);
+        dataset.addSeries(data8);
+        dataset.addSeries(data9);
+        dataset.addSeries(data10);
+        return dataset;
+    }
+    
+    private static XYDataset createDataSetAInverse(List<trace_det> list) {
+        final XYSeries data1 = new XYSeries("1");
+        final XYSeries data2 = new XYSeries("2");
+        final XYSeries data3 = new XYSeries("3");
+        final XYSeries data4 = new XYSeries("4");
+        final XYSeries data5 = new XYSeries("5");
+        final XYSeries data6 = new XYSeries("6");
+        final XYSeries data7 = new XYSeries("7");
+        final XYSeries data8 = new XYSeries("8");
+        final XYSeries data9 = new XYSeries("9");
+        final XYSeries data10 = new XYSeries("10");
+        double det;
+        double trace;
+        int n;
+        //System.out.println("length of list: " + list.size());
+        for (trace_det t : list) {
+            det = t.getDet();
+            trace = t.getTrace();
+            n = t.getIterInverseA();
             //System.out.println(n);
             if (n >= 1 && n <= 10) {
                 //System.out.println("1-10");
