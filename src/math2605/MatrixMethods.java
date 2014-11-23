@@ -166,4 +166,16 @@ public class MatrixMethods {
             }
         }
     }
+    
+    public double trace() {
+        double trace = 0;
+        for (int i = 0; i < m.getRowDimension(); i++) {
+            for (int j = 0; j < m.getColumnDimension(); j++) {
+                if (j == i) {
+                    trace += m.getEntry(i, j);
+                }
+            }
+        }
+        return trace;
+    }   
 }
