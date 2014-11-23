@@ -88,4 +88,23 @@ public class qr_fact_househ {
       return Q;
    }
     
+    
+    public RealMatrix getR () {
+     RealMatrix R = new Array2DRowRealMatrix(qr.getColumnDimension(), qr.getColumnDimension());
+      for (int i = 0; i < col; i++) {
+         for (int j = 0; j < col; j++) {
+            if (i < j) {
+               R.setEntry(i, j, qr.getEntry(i, j));
+            } else if (i == j) {
+               R.setEntry(i, j, dig[i]);
+            } else {
+                R.setEntry(i, j, 0);
+            }
+            System.out.println("R " + i + j + " " + R.getEntry(i, j));
+         }
+      }
+      return R;
+   }
+    
+    
 }
