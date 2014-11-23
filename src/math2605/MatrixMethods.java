@@ -13,9 +13,14 @@ import org.apache.commons.math.linear.RealMatrix;
  *
  * @author anjali
  */
+
 public class MatrixMethods {
+    public RealMatrix m;
+    public MatrixMethods(RealMatrix m){
+        this.m = m;
+    }
     public RealMatrix inverseMatrix(RealMatrix m ){
-        AbstractRealMatrix inverse = new Array2DRowRealMatrix();
+        RealMatrix inverse = new Array2DRowRealMatrix(m.getRowDimension(), m.getColumnDimension());
         //RealMatrix inverse = new AbstractRealMatrix(m.getRowDimension(), m.getColumnDimension());
         double[][] r = invert(m.getData());
         int row = r[0].length;
