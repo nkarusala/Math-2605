@@ -71,7 +71,7 @@ public class gn_qua {
         System.out.println(r);
         RealMatrix sub = findQR(J, r);
         
-        for (int i = N; i > 0; i++) {            
+        for (int i = N; i > 0; i--) {            
             B = B.subtract(sub);
             double B0 = B.getEntry(0, 0);
             double B1 = B.getEntry(1, 0);
@@ -80,7 +80,7 @@ public class gn_qua {
             setR(pairs, B0, B1, B2, r);
             setJ(pairs, B0, B1, B2, r, J);
         }
-        
+        System.out.println("B");
         System.out.println(B.toString());
     }
     
