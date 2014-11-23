@@ -12,7 +12,6 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import org.apache.commons.math.linear.AbstractRealMatrix;
 import org.apache.commons.math.linear.Array2DRowRealMatrix;
 import org.apache.commons.math.linear.RealMatrix;
 
@@ -40,7 +39,7 @@ public class gn_qua {
                 pairs.add(pair);
             }
             br.close();
-        } catch (Exception e) {}
+        } catch (Exception e) {System.out.println(e.getMessage());}
         
         System.out.println("Please enter the value of a:\n");
         double a = scanner.nextInt();
@@ -49,7 +48,7 @@ public class gn_qua {
         System.out.println("Please enter the value of c:\n");
         double c = scanner.nextInt();
         //init B, vector with 3 coordinates
-        AbstractRealMatrix B = new Array2DRowRealMatrix(3, 1);
+        RealMatrix B = new Array2DRowRealMatrix(3, 1);
         B.setEntry(0, 0, a);
         B.setEntry(1, 0, b);
         B.setEntry(2, 0, c);
@@ -59,27 +58,48 @@ public class gn_qua {
         int N = scanner.nextInt();
         
         //init r, vector of residuals
-        AbstractRealMatrix r = new Array2DRowRealMatrix();
+        RealMatrix r = new Array2DRowRealMatrix(pairs.size(), 1);
         setR(pairs, a, b, c, r);
         
         //init J, Jacobian of r
-        AbstractRealMatrix J = new Array2DRowRealMatrix();
-        setJ(pairs, a, b, c, r, J);
+        RealMatrix J = new Array2DRowRealMatrix(pairs.size(), 3);
+        setJ(pairs, a, b, c, r, J);      
+        
+        System.out.println("J");
+        System.out.println(J);
+        System.out.println("r");
+        System.out.println(r);
+        RealMatrix sub = findQR(J, r);
+        
+        for (int i = N; i > 0; i++) {            
+            B = B.subtract(sub);
+            double B0 = B.getEntry(0, 0);
+            double B1 = B.getEntry(1, 0);
+            double B2 = B.getEntry(2, 0);
+            //CHANGE ABC TO USE B0, B1, B2
+            setR(pairs, B0, B1, B2, r);
+            setJ(pairs, B0, B1, B2, r, J);
+        }
+        
+        System.out.println(B.toString());
     }
     
-    private static void setR(List<String []> pairs, double a, double b, double c, AbstractRealMatrix r) {
+    private static void setR(List<String []> pairs, double a, double b, double c, RealMatrix r) {
         int row = 0;
         for (String[] p : pairs) {
             double x = Double.parseDouble(p[0]);
             double fx = a * Math.pow(x, 2) + b * x + c;
             double y = Double.parseDouble(p[1]);
             double resid = y - fx;
+            if (r == null) {
+                System.out.println("r is null");
+            }
             r.setEntry(row, 0, resid);
             row++;
         }
     }
     
-    private static void setJ(List<String[]> pairs, double a, double b, double c, AbstractRealMatrix r, AbstractRealMatrix J) {
+    private static void setJ(List<String[]> pairs, double a, double b, double c, RealMatrix r, RealMatrix J) {
         for (int i = 0; i < r.getRowDimension(); i++) {
             double x = Double.parseDouble(pairs.get(i)[0]);
             for (int j = 0; j < 3; j++) {
@@ -89,9 +109,26 @@ public class gn_qua {
                 } else if (j == 1) {
                     entry = -x;
                 }
-                J.setEntry(i, j, entry);    
-            } 
+                J.setEntry(i, j, entry);
+            }
         }
+    }
+    
+    private static RealMatrix findQR(RealMatrix J, RealMatrix r) {
+        qr_fact_househ m = new qr_fact_househ(J);
+        RealMatrix Q = m.getQ();
+        System.out.println("Q");
+        System.out.println(Q);
+        RealMatrix qTranspose = Q.transpose();
+        System.out.println("qtranspose");
+        System.out.println(qTranspose);
+        RealMatrix R = m.getR();
+        MatrixMethods temp = new MatrixMethods();
+        RealMatrix rInverse = temp.inverseMatrix(R);
+        System.out.println("rInverse");
+        System.out.println(rInverse);
+        RealMatrix sub = rInverse.multiply(qTranspose).multiply(r);
+        return sub;
     }
         
     

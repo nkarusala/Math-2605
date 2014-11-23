@@ -65,6 +65,12 @@ public class gn_log {
         //init J, Jacobian of r
         AbstractRealMatrix J = new Array2DRowRealMatrix();
         setJ(pairs, a, b, c, r, J);
+        
+        for (int i = N; i > 0; i++) {
+            //CHANGE ABC TO USE B0, B1, B2
+            setR(pairs, a, b, c, r);
+            setJ(pairs, a, b, c, r, J);
+        }
     }
     
     private static void setR(List<String []> pairs, double a, double b, double c, AbstractRealMatrix r) {
