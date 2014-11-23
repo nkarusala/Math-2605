@@ -28,18 +28,18 @@ public class qr_fact_househ {
             double normal = 0;
             for(int j = i; j < row; j++){
                 double num = qr.getEntry(j, i);
-                normal = sqrt((normal *normal) + (num*num));     
+                normal = Math.hypot(normal, num);     
             }
             
             if(normal != 0){
                 if(qr.getEntry(i, i) < 0){
-                    normal = normal * (-1);
+                    normal = -normal;
                 }
                 for(int j = i ; j < row; j++ ){
                     qr.setEntry(j, i, (qr.getEntry(j, i) / normal));
                 }
                 qr.setEntry(i,i,(qr.getEntry(i, i)+ 1));
-            }
+                
             
             for(int j = i+1; j < col; j++){
                 double x = 0;
@@ -50,6 +50,8 @@ public class qr_fact_househ {
                 for(int k = i; k<row;k++){
                     qr.setEntry(k, j, (qr.getEntry(k, i)*x));
                 }
+            }
+            
             }
             
             dig[i] = -normal;
