@@ -83,8 +83,6 @@ public class qr_fact_househ {
             }
            
          }
-         //System.out.println(k);
-         //System.out.println(" " + Q.toString()); 
       }
       
       return Q;
