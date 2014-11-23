@@ -26,34 +26,34 @@ public class qr_fact_househ {
         dig = new double[col];
         for (int k = 0; k < col; k++) {
          // Compute 2-norm of k-th column without under/overflow.
-         double nrm = 0;
-         for (int i = k; i < row; i++) {
-            nrm = Math.hypot(nrm,qr.getEntry(i, k));
-         }
-
-         if (nrm != 0.0) {
-            // Form k-th Householder vector.
-            if (qr.getEntry(k, k) < 0) {
-               nrm = -nrm;
-            }
+            double nrm = 0;
             for (int i = k; i < row; i++) {
-                qr.setEntry(i, k, (qr.getEntry(i, k)/nrm));
+               nrm = Math.hypot(nrm,qr.getEntry(i, k));
             }
-            qr.setEntry(k, k, qr.getEntry(k, k)+1);
 
-            for (int j = k+1; j < col; j++) {
-               double s = 0.0; 
-               for (int i = k; i < row; i++) {
-                  s += qr.getEntry(i, k)*qr.getEntry(i, j);
-               }
-               s = -s/qr.getEntry(k, k);
-               for (int i = k; i < row; i++) {
-                   qr.setEntry(i, j, ((s*qr.getEntry(i, k)) + qr.getEntry(i, j)));
-               }
+            if (nrm != 0.0) {
+                // Form k-th Householder vector.
+                if (qr.getEntry(k, k) < 0) {
+                   nrm = -nrm;
+                }
+                for (int i = k; i < row; i++) {
+                    qr.setEntry(i, k, (qr.getEntry(i, k)/nrm));
+                }
+                qr.setEntry(k, k, qr.getEntry(k, k)+1);
+
+                for (int j = k+1; j < col; j++) {
+                   double s = 0.0; 
+                   for (int i = k; i < row; i++) {
+                      s += qr.getEntry(i, k)*qr.getEntry(i, j);
+                   }
+                   s = -s/qr.getEntry(k, k);
+                   for (int i = k; i < row; i++) {
+                       qr.setEntry(i, j, ((s*qr.getEntry(i, k)) + qr.getEntry(i, j)));
+                   }
+                }
             }
-         }
-         dig[k] = -nrm;
-      }
+            dig[k] = -nrm;
+        }
     }
     
    
