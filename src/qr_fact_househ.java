@@ -11,8 +11,6 @@ public class qr_fact_househ {
         private RealMatrix qr;
         private int row, col;
         private double[] dig;
-        double[][] QR ;
-        double[] Rdiag;
 
     public qr_fact_househ(RealMatrix m){
         qr = new Array2DRowRealMatrix(m.getRowDimension(), m.getColumnDimension());
