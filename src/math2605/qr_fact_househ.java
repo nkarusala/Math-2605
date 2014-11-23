@@ -21,41 +21,39 @@ public class qr_fact_househ {
 
     public qr_fact_househ(RealMatrix m){
         qr = new Array2DRowRealMatrix(m.getRowDimension(), m.getColumnDimension());
-        qr = m.copy();
         row = m.getRowDimension();
         col = m.getColumnDimension();
-        for(int i = 0; i < col; i++){
-            double normal = 0;
-            for(int j = i; j < row; j++){
-                double num = qr.getEntry(j, i);
-                normal = Math.hypot(normal, num);     
+        dig = new double[col];
+        for (int k = 0; k < col; k++) {
+         // Compute 2-norm of k-th column without under/overflow.
+         double nrm = 0;
+         for (int i = k; i < row; i++) {
+            nrm = Math.hypot(nrm,qr.getEntry(i, k));
+         }
+
+         if (nrm != 0.0) {
+            // Form k-th Householder vector.
+            if (qr.getEntry(k, k) < 0) {
+               nrm = -nrm;
             }
-            
-            if(normal != 0){
-                if(qr.getEntry(i, i) < 0){
-                    normal = -normal;
-                }
-                for(int j = i ; j < row; j++ ){
-                    qr.setEntry(j, i, (qr.getEntry(j, i) / normal));
-                }
-                qr.setEntry(i,i,(qr.getEntry(i, i)+ 1));
-                
-            
-            for(int j = i+1; j < col; j++){
-                double x = 0;
-                for(int k = i; k < row; k++){
-                    x = x + (qr.getEntry(k, i)*qr.getEntry(k, i));
-                }
-                x = (x*(-1))/qr.getEntry(i, i);
-                for(int k = i; k<row;k++){
-                    qr.setEntry(k, j, (qr.getEntry(k, i)*x));
-                }
+            for (int i = k; i < row; i++) {
+                qr.setEntry(i, k, (qr.getEntry(i, k)/nrm));
             }
-            
+            qr.setEntry(k, k, qr.getEntry(k, k)+1);
+
+            for (int j = k+1; j < col; j++) {
+               double s = 0.0; 
+               for (int i = k; i < row; i++) {
+                  s += qr.getEntry(i, k)*qr.getEntry(i, j);
+               }
+               s = -s/qr.getEntry(k, k);
+               for (int i = k; i < row; i++) {
+                   qr.setEntry(i, j, ((s*qr.getEntry(i, k)) + qr.getEntry(i, j)));
+               }
             }
-            
-            dig[i] = -normal;
-        }
+         }
+         dig[k] = -nrm;
+      }
     }
     
    
