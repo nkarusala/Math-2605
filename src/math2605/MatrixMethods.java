@@ -19,7 +19,7 @@ public class MatrixMethods {
     public MatrixMethods(RealMatrix m){
         this.m = m;
     }
-    public RealMatrix inverseMatrix(RealMatrix m ){
+    public RealMatrix inverseMatrix( ){
         RealMatrix inverse = new Array2DRowRealMatrix(m.getRowDimension(), m.getColumnDimension());
         //RealMatrix inverse = new AbstractRealMatrix(m.getRowDimension(), m.getColumnDimension());
         double[][] r = invert(m.getData());
@@ -33,7 +33,7 @@ public class MatrixMethods {
         return inverse;
     }
     
-    public double determinant(RealMatrix m){
+    public double determinant(){
         return determinant(m.getData(), m.getColumnDimension());
     }
     
