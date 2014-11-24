@@ -13,6 +13,7 @@ public class qr_fact_househ {
         private RealMatrix qr;
         private int row, col;
         private double[] dig;
+        double[][] Q ;
 
     public qr_fact_househ(RealMatrix m){
         qr = new Array2DRowRealMatrix(m.getRowDimension(), m.getColumnDimension());
@@ -21,21 +22,20 @@ public class qr_fact_househ {
         dig = new double[col];
         qr = m.copy();
         for (int k = 0; k < col; k++) {
-         // Compute 2-norm of k-th column without under/overflow.
-            double nrm = 0;
+            double normal = 0;
             for (int i = k; i < row; i++) {
-               nrm = Math.hypot(nrm,qr.getEntry(i, k));
+               normal = Math.hypot(normal,qr.getEntry(i, k));
               
             }
            
 
-            if (nrm != 0.0) {
-                // Form k-th Householder vector.
-                if (qr.getEntry(k, k) < 0) {
-                   nrm = -nrm;
+            if (normal != 0.0) {
+               
+            	if (qr.getEntry(k, k) < 0) {
+                   normal = -normal;
                 }
                 for (int i = k; i < row; i++) {
-                    qr.setEntry(i, k, (qr.getEntry(i, k)/nrm));
+                    qr.setEntry(i, k, (qr.getEntry(i, k)/normal));
                     
                 }
                 qr.setEntry(k, k, qr.getEntry(k, k)+1.0);
@@ -55,57 +55,70 @@ public class qr_fact_househ {
                    }
                 }
             }
-            dig[k] = -nrm;
+            dig[k] = -normal;
             
         }
         //System.out.println("qr");
         //System.out.println(qr.toString());
       
     }
+    
+    
+
+   
+    public RealMatrix getR () {
+     RealMatrix R = new Array2DRowRealMatrix(qr.getColumnDimension(), qr.getColumnDimension());
+      for (int out = 0; out < col; out++) {
+         for (int j = 0; j < col; j++) {
+            if (out < j) {
+               R.setEntry(out, j, qr.getEntry(out, j));
+              // System.out.println(R.getEntry(i, j));
+            } else if (out == j) {
+               R.setEntry(out, j, dig[out]);
+            // System.out.println(R.getEntry(i, j));
+            } else {
+                R.setEntry(out, j, 0);
+             // System.out.println(R.getEntry(i, j));
+            }
+            System.out.println("R " + out + j + " " + R.getEntry(out, j));
+         }
+      }
+      return R;
+   }
+    
+    
+
+
+    
+    
     public RealMatrix getQ () {
       RealMatrix Q = new Array2DRowRealMatrix(qr.getRowDimension(), qr.getColumnDimension());
-      for (int k = col-1; k >= 0; k--) {
+      for (int g = col-1; g >= 0; g--) {
          for (int i = 0; i < row; i++) {
-             Q.setEntry(i, k, 0.0);
+             Q.setEntry(i, g, 0.0);
          }
-         Q.setEntry(k, k, 1.0);
+         Q.setEntry(g, g, 1.0);
          //System.out.println(Q.getEntry(k, k));
-         for (int j = k; j < col; j++) {
-            if (qr.getEntry(k, k) != 0) {
+         for (int j = g; j < col; j++) {
+            if (qr.getEntry(g,g) != 0) {
                double s = 0.0;
-               for (int i = k; i < row; i++) {
-                   s = s + (qr.getEntry(i, k) * Q.getEntry(i, j));
+               for (int i = g; i < row; i++) {
+                   s = s + (qr.getEntry(i, g) * Q.getEntry(i, j));
                   // System.out.println(s);
                }
-               s = (-s) / qr.getEntry(k, k);
+               s = (-s) / qr.getEntry(g, g);
                //System.out.println();
-               for (int i = k; i < row; i++) {
-                   Q.setEntry(i, j, ((s* qr.getEntry(i, k)) + Q.getEntry(i, j)));
+               for (int i = g; i < row; i++) {
+                   Q.setEntry(i, j, ((s* qr.getEntry(i, g)) + Q.getEntry(i, j)));
                }
             }
            
          }
+         //System.out.println(k);
+         //System.out.println(" " + Q.toString()); 
       }
       
       return Q;
-   }
-    
-    
-    public RealMatrix getR () {
-     RealMatrix R = new Array2DRowRealMatrix(qr.getColumnDimension(), qr.getColumnDimension());
-      for (int i = 0; i < col; i++) {
-         for (int j = 0; j < col; j++) {
-            if (i < j) {
-               R.setEntry(i, j, qr.getEntry(i, j));
-            } else if (i == j) {
-               R.setEntry(i, j, dig[i]);
-            } else {
-                R.setEntry(i, j, 0);
-            }
-            System.out.println("R " + i + j + " " + R.getEntry(i, j));
-         }
-      }
-      return R;
    }
     
     
