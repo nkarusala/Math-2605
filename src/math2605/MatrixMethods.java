@@ -158,4 +158,6 @@ public class MatrixMethods {
         }
         return trace;
     }   
+    
+    
 }

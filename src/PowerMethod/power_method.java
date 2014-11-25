@@ -47,7 +47,6 @@ public class power_method {
             uInit = uN;
             
             accuracy = Math.abs(k - prevK);
-            //System.out.println(accuracy);
             if (accuracy <= epsilon) {
                 break;
             }
@@ -68,6 +67,10 @@ public class power_method {
     }
     
     public static void main(String[] args) {
+        //////////////////////////////////////////////////////
+        // Edit vals to contain values for matrix A         //
+        // Edit vals2 to contain values for initial vector  //
+        //////////////////////////////////////////////////////
         double[][] vals = {{3, 4}, {3, 1}};
         RealMatrix A = new Array2DRowRealMatrix(vals);
         double[][] vals2 = {{1}, {1}};
@@ -216,16 +219,16 @@ public class power_method {
     }
     
     private static XYDataset createDataSetAInverse(List<trace_det> list) {
-        final XYSeries data1 = new XYSeries("1");
-        final XYSeries data2 = new XYSeries("2");
-        final XYSeries data3 = new XYSeries("3");
-        final XYSeries data4 = new XYSeries("4");
-        final XYSeries data5 = new XYSeries("5");
-        final XYSeries data6 = new XYSeries("6");
-        final XYSeries data7 = new XYSeries("7");
-        final XYSeries data8 = new XYSeries("8");
-        final XYSeries data9 = new XYSeries("9");
-        final XYSeries data10 = new XYSeries("10");
+        final XYSeries data1 = new XYSeries("1 - 10");
+        final XYSeries data2 = new XYSeries("11 - 20");
+        final XYSeries data3 = new XYSeries("21 - 30");
+        final XYSeries data4 = new XYSeries("31 - 40");
+        final XYSeries data5 = new XYSeries("41 - 50");
+        final XYSeries data6 = new XYSeries("51 - 60");
+        final XYSeries data7 = new XYSeries("61 - 70");
+        final XYSeries data8 = new XYSeries("71 - 80");
+        final XYSeries data9 = new XYSeries("81 - 90");
+        final XYSeries data10 = new XYSeries("91 - 100");
         double det;
         double trace;
         int n;
@@ -283,7 +286,7 @@ public class power_method {
         double start = -2;
         List<RealMatrix> matrices = new ArrayList<>();
         Random rand = new Random();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1000; i++) {
             RealMatrix a = new Array2DRowRealMatrix(2, 2);
             a.setEntry(0, 0, rand.nextDouble() * (end - start) + start);
             a.setEntry(0, 1, rand.nextDouble() * (end - start) + start);

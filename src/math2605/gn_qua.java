@@ -26,7 +26,7 @@ public class gn_qua {
      */
     public static void main(String[] args) {
         //get file name
-        System.out.println("Please enter a file name:\n");
+        System.out.println("Please enter a file name:");
         Scanner scanner = new Scanner(System.in);
         String fileName = scanner.nextLine();
         List<String []> pairs = new ArrayList<>();
@@ -41,11 +41,11 @@ public class gn_qua {
             br.close();
         } catch (Exception e) {System.out.println(e.getMessage());}
         
-        System.out.println("Please enter the value of a:\n");
+        System.out.println("Please enter the value of a:");
         double a = scanner.nextInt();
-        System.out.println("Please enter the value of b:\n");
+        System.out.println("Please enter the value of b:");
         double b = scanner.nextInt();
-        System.out.println("Please enter the value of c:\n");
+        System.out.println("Please enter the value of c:");
         double c = scanner.nextInt();
         //init B, vector with 3 coordinates
         RealMatrix B = new Array2DRowRealMatrix(3, 1);
@@ -53,7 +53,7 @@ public class gn_qua {
         B.setEntry(1, 0, b);
         B.setEntry(2, 0, c);
         
-        System.out.println("Please enter the number of iteration for the Gauss-newton:\n");
+        System.out.println("Please enter the number of iteration for the Gauss-newton:");
         //init N, number of iterations
         int N = scanner.nextInt();
         
@@ -69,6 +69,7 @@ public class gn_qua {
         System.out.println(J);
         System.out.println("r");
         System.out.println(r);
+        
         RealMatrix sub = findQR(J, r);
         
         for (int i = N; i > 0; i--) {            
@@ -91,9 +92,6 @@ public class gn_qua {
             double fx = a * Math.pow(x, 2) + b * x + c;
             double y = Double.parseDouble(p[1]);
             double resid = y - fx;
-            if (r == null) {
-                System.out.println("r is null");
-            }
             r.setEntry(row, 0, resid);
             row++;
         }
@@ -117,8 +115,6 @@ public class gn_qua {
     private static RealMatrix findQR(RealMatrix J, RealMatrix r) {
         qr_fact_househ m = new qr_fact_househ(J);
         RealMatrix Q = m.getQ();
-        System.out.println("Q");
-        System.out.println(Q);
         RealMatrix qTranspose = Q.transpose();
         System.out.println("qtranspose");
         System.out.println(qTranspose);

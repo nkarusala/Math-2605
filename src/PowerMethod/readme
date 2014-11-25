@@ -1,0 +1,4 @@
+power_method.java is the java class containing a main method to execute the program. 
+In the main method, edit vals and vals2 to contain the appropriate values for the initial matrix A 
+and initial guess v, respectively.
+Run power_method.java to display graphs.

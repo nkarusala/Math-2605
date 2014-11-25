@@ -80,7 +80,7 @@ public class qr_fact_househ {
                 R.setEntry(out, j, 0);
              // System.out.println(R.getEntry(i, j));
             }
-            System.out.println("R " + out + j + " " + R.getEntry(out, j));
+            //System.out.println("R " + out + j + " " + R.getEntry(out, j));
          }
       }
       return R;
